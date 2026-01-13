@@ -32,6 +32,19 @@ app.set('views', path.join(__dirname, 'src/views'))
 // Create an instances of variable from .env file (ONLY DO THIS FOR PRACTICE, DO NOT DO THIS IN REAL PROD.) Since we deleted the name from .env later in the assignment, this name variable should be okay to delete. Keep until known.
 const name = process.env.NAME;
 
+/**
+ * Global template variables middleware
+ * 
+ * Makes common variables available to all EJS templates without having to pass
+ * them individually from each route handler
+ */
+app.use((req, res, next) => {
+    // Make NODE_ENV available to all templates
+    res.locals.NODE_ENV = NODE_ENV.toLowerCase() || 'production';
+    // Continue to the next middleware or route handler
+    next();
+});
+
 // ROUTES
 app.get('/', (req, res) => {
     const title = 'Welcome Home';
@@ -45,6 +58,23 @@ app.get('/products', (req, res) => {
     const title = 'Our Products'
     res.render('products', {title})
 });
+
+// When in development mode, start a WebSocket server for live reloading
+if (NODE_ENV.includes('dev')) {
+    const ws = await import('ws');
+    try {
+        const wsPort = parseInt(PORT) + 1;
+        const wsServer = new ws.WebSocketServer({ port: wsPort });
+        wsServer.on('listening', () => {
+            console.log(`WebSocket server is running on port ${wsPort}`);
+        });
+        wsServer.on('error', (error) => {
+            console.error('WebSocket server error:', error);
+        });
+    } catch (error) {
+        console.error('Failed to start WebSocket server:', error);
+    }
+}
 
 // Start the server and listen on the specified port
 app.listen(PORT, () => {
