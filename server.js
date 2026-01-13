@@ -11,6 +11,7 @@ const __filename = fileURLToPath(import.meta.url);
 
 const __dirname = path.dirname(__filename);
 
+const NODE_ENV = process.env.NODE_ENV || 'production';
 // Define the port number the server will listen on
 const PORT = process.env.PORT || 3000;
 
@@ -18,10 +19,17 @@ const PORT = process.env.PORT || 3000;
 // Create an instance of an Express application
 const app = express();
 
+// MIDDLEWARE CONFIGURATION
 // Serve static files from the public directory
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Create an instances of variable from .env file (ONLY DO THIS FOR PRACTICE, DO NOT DO THIS IN REAL PROD.)
+//Set EJS as the templating engine
+app.set('view engine', 'ejs');
+
+// Tell Express where to find your templates
+app.set('views', path.join(__dirname, 'src/views'))
+
+// Create an instances of variable from .env file (ONLY DO THIS FOR PRACTICE, DO NOT DO THIS IN REAL PROD.) Since we deleted the name from .env later in the assignment, this name variable should be okay to delete. Keep until known.
 const name = process.env.NAME;
 
 // ROUTES
