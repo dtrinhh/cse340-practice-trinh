@@ -40,6 +40,17 @@ const courses = {
             { time: '12:00 PM', room: 'GEB 205', professor: 'Brother Davis' },
             { time: '4:00 PM', room: 'GEB 203', professor: 'Sister Enkey' }
         ]
+    },
+    'HIST101' : {
+        id: "HIST101",
+        title: "History",
+        description: "Learn about the history of the united states of america",
+        credits: 3,
+        sections: [
+            { time: '7:30 AM', room: 'TAY100', professor: 'Brother Clark' },
+            { time: '9:30 AM', room: 'TAY101', professor: 'Brother Lewis' },
+            { time: '10:00 AM', room: 'TAY101', professor: 'Brother Sea' }
+        ]
     }
 };
 
@@ -82,6 +93,64 @@ app.use((req, res, next) => {
     next();
 });
 
+app.use((req, res, next) => {
+    // Skip logging for routes that start with /. (like /.well-known/)
+    if (!req.path.startsWith('/.')) {
+        // console.log(`${req.method} ${req.url}`);
+    }
+    next(); // Pass control to the next middleware or route
+});
+
+// Middleware to add global data to all templates
+app.use((req, res, next) => {
+    // Add current year for copyright
+    res.locals.currentYear = new Date().getFullYear();
+    next();
+});
+
+// Global middleware for time-based greeting
+app.use((req, res, next) => {
+    const currentHour = new Date().getHours();
+    if (currentHour < 12){
+        res.locals.greeting = "Good Morning! ";
+    }
+    else if (currentHour < 17){
+        res.locals.greeting = "Good Afternoon! ";
+    }
+    else if (currentHour >= 17) {
+        res.locals.greeting = "Good Evening! "
+    }
+
+    next();
+});
+
+// Global middleware for random theme selection
+app.use((req, res, next) => {
+    const themes = ['blue-theme', 'green-theme', 'red-theme'];
+    // Your task: Pick a random theme from the array
+    const randomTheme = themes[Math.floor(Math.random() * themes.length)]
+    res.locals.bodyClass = randomTheme;
+
+    next();
+});
+
+// Global middleware to share query parameters with templates (unfinished?)
+app.use((req, res, next) => {
+    res.locals.queryParams = req.query || {};
+    
+    next();
+});
+
+// Route-specific middleware that sets custom headers
+const addDemoHeaders = (req, res, next) => {
+    // Your task: Set custom headers using res.setHeader()
+    res.setHeader('X-Demo-Page', 'true')
+    // Add a header called 'X-Demo-Page' with value 'true'
+    res.setHeader('X-Middleware-Demo', 'This is demo message! ')
+    // Add a header called 'X-Middleware-Demo' with any message you want
+    next();
+};
+
 // ROUTES
 app.get('/', (req, res) => {
     const title = 'Welcome Home';
@@ -103,6 +172,26 @@ app.get('/catalog', (req, res) => {
         courses: courses
     });
 });
+
+// Demo page route with header middleware
+app.get('/demo', addDemoHeaders, (req, res) => {
+    res.render('demo', {
+        title: 'Middleware Demo Page'
+    });
+});
+
+// Random Course Feature route (stuck cant figure out)
+// app.get('/catalog/random', (req,res, next) => {
+//     const random = req.params.random;
+//     const randomIndex = Math.random() * courses.length;
+//     const courseId = courses[randomIndex];
+//     const course = courses[courseId]
+
+//     res.render('random', {
+//         title: 'Course-detail',
+//         courses: courses
+//     });
+// })
 
 // Enhanced course detail route with sorting
 app.get('/catalog/:courseId', (req, res, next) => {
@@ -201,5 +290,7 @@ if (NODE_ENV.includes('dev')) {
 app.listen(PORT, () => {
     console.log(`Server is running on http://127.0.0.1:${PORT}`);
 });
+
+
 
 

@@ -25,19 +25,6 @@
             <% }); %>
         </div>
     </div>
-    <% if (Object.keys(queryParams).length > 0) { %>
-    <div class="sort-message">
-        <p>Currently sorted by: <% Object.keys(queryParams).forEach(key => { %>
-                <%= queryParams[key] %></>
-                <% }); %></p>
-    </div>
-    <% } else { %>
-    <div class="sort-message">
-        <p>No sorting applied, using default sorting by time.</p>
-    </div>
-    <% } %>
-
-    
     <div class="navigation">
         <p><a href="/catalog">&larr; Back to Course Catalog</a></p>
     </div>
