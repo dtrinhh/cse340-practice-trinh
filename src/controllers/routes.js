@@ -1,7 +1,7 @@
 // import statements for controllers and middleware
 import { Router } from 'express';
-import { addDemoHeaders } from '..middleware/demo/headers.js';
-import { catalogPage, courseDetailPage } from './catalog/catalog';
+import { addDemoHeaders } from '../middleware/demo/headers.js';
+import { catalogPage, courseDetailPage } from './catalog/catalog.js';
 import { homePage, aboutPage, demoPage, testErrorPage } from './index.js'
 
 // Create a new router instance
