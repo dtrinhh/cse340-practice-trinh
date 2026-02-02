@@ -1,15 +1,18 @@
-import { getAllFaculty, getFacultyById, getSortedFaculty } from './models/faculty/list.ejs'
+import { getFacultyById, getSortedFaculty } from '../../models/faculty/faculty.js'
 
 // Route handler for faculty list page
 const facultyListPage = (req, res) => {
-    const facultyList = getAllFaculty();
-    res.render('faculty', {
-        title: 'Faculty List',
-        faculty: facultyList
+    const sortBy = req.query.sort || 'department';
+    const facultyList = getSortedFaculty(sortBy);
+    res.render('faculty/list', {
+        title: 'Faculty Directory',
+        faculty: facultyList,
+        currentSort: sortBy
     });
 };
 
-const facultyDetailPage = (req, res) => {
+// Route handler for individual faculty
+const facultyDetailPage = (req, res, next) => {
     const facultyId = req.params.facultyId;
     const faculty = getFacultyById(facultyId);
 
@@ -19,14 +22,10 @@ const facultyDetailPage = (req, res) => {
         err.status = 404;
         return next(err);
     }
-    
-    // Sorting handler
-    const sortBy = req.query.sort || 'department';
-    const sortedFaculty = getSortedFaculty(sortBy)
-    res.render('faculty-detail', {
-        title: 'Faculty Department',
-        faculty: sortedFaculty,
-        currentSort: sortBy
+
+    res.render('faculty/detail', {
+        title: faculty.name,
+        faculty: faculty
     });
 };
 export { facultyListPage, facultyDetailPage };

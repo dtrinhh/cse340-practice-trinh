@@ -73,14 +73,15 @@ const faculty = {
         title: 'Assistant Professor'
     }
 };
-const getAllFaculty = () => {
-    return faculty;
-}
 
 const getFacultyById = (facultyId) => {
-    // TODO: Look up faculty member by ID, return null if not found
+    if (!facultyId) {
+        return null
+    };
+        
     return faculty[facultyId] || null;
 };
+
 const getSortedFaculty = (sortBy) => {
     // TODO: Validate sortBy parameter (name, department, or title), default to 'department' if invalid
     // Create an array of all faculty members
@@ -89,6 +90,7 @@ const getSortedFaculty = (sortBy) => {
         // Add each individual faculty object to the array
         facultyArray.push({...faculty[key], id: key});
     }
+    
     // Sort the array by the chosen property
     switch (sortBy) {
         case 'name':
@@ -98,8 +100,9 @@ const getSortedFaculty = (sortBy) => {
         case 'department':
         default:    
             // Return the sorted array by department default?
+            // return facultyArray.sort((a, b) => a.department.localeCompare(b.department));
             return facultyArray;
-    }
-};
+        }   
+    };
 
-export { getAllFaculty, getFacultyById, getSortedFaculty };
+export { getFacultyById, getSortedFaculty };
