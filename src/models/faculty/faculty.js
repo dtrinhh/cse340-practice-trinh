@@ -91,18 +91,32 @@ const getSortedFaculty = (sortBy) => {
         facultyArray.push({...faculty[key], id: key});
     }
     
-    // Sort the array by the chosen property
-    switch (sortBy) {
-        case 'name':
-            return facultyArray.sort((a, b) => a.name.localeCompare(b.name));
-        case 'title':
-            return facultyArray.sort((a, b) => a.title.localeCompare(b.title));
-        case 'department':
-        default:    
-            // Return the sorted array by department default?
-            // return facultyArray.sort((a, b) => a.department.localeCompare(b.department));
-            return facultyArray;
-        }   
+    facultyArray.sort((a, b) => {
+        // Compare the property values
+        if (a[sortBy] < b[sortBy]) {
+            return -1;
+        }
+        if (a[sortBy] > b[sortBy]) {
+            return 1;
+        }
+        return 0; // They are equal
+    });
+    // Return the sorted array
+    return facultyArray;
+
+    // ALTERNATE Sort the array by the chosen property
+    // switch (sortBy) {
+    //     case 'name':
+    //         return facultyArray.sort((a, b) => a.name.localeCompare(b.name));
+    //     case 'title':
+    //         return facultyArray.sort((a, b) => a.title.localeCompare(b.title));
+    //     case 'department':
+    //     default:    
+    //         // Return the sorted array by department default?
+    //         return facultyArray.sort((a, b) => a.department.localeCompare(b.department));
+    //         // return facultyArray;
+    //     }   
+
     };
 
 export { getFacultyById, getSortedFaculty };
