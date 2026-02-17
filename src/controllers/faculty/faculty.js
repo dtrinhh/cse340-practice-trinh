@@ -1,9 +1,12 @@
-import { getFacultyById, getSortedFaculty } from '../../models/faculty/faculty.js'
+import { getFacultyBySlug, getSortedFaculty } from '../../models/faculty/faculty.js'
 
 // Route handler for faculty list page
-const facultyListPage = (req, res) => {
+const facultyListPage = async (req, res) => {
     const sortBy = req.query.sort || 'department';
-    const facultyList = getSortedFaculty(sortBy);
+    const facultyList = await getSortedFaculty(sortBy);
+
+    console.log(facultyList)
+
     res.render('faculty/list', {
         title: 'Faculty Directory',
         faculty: facultyList,
@@ -11,21 +14,21 @@ const facultyListPage = (req, res) => {
     });
 };
 
-// Route handler for individual faculty
-const facultyDetailPage = (req, res, next) => {
-    const facultyId = req.params.facultyId;
-    const faculty = getFacultyById(facultyId);
+// Route handler for individual faculty members
+const facultyDetailPage = async (req, res, next) => {
+    const facultySlug = req.params.facultySlug;
+    const facultyMember = await getFacultyBySlug(facultySlug);
 
-    // Error 404 logic for non existant facultyId
-    if (!faculty) {
-        const err = new Error(`Faculty ${facultyId} not found`);
+    // Error 404 logic for non existant facultySlug
+    if (Object.keys(facultyMember).length === 0) {
+        const err = new Error(`Faculty ${facultySlug} not found`);
         err.status = 404;
         return next(err);
     }
 
     res.render('faculty/detail', {
-        title: faculty.name,
-        faculty: faculty
+        title: facultyMember.name,
+        faculty: facultyMember
     });
 };
 export { facultyListPage, facultyDetailPage };
