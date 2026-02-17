@@ -76,6 +76,6 @@ const addLocalVariables = (req, res, next) => {
     // Continue to the next middleware or route handler
     next();
 };
-export { addLocalVariables };
+export { addLocalVariables, setHeadAssetsFunctionality };
 
 

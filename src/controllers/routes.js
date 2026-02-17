@@ -9,8 +9,20 @@ import { facultyDetailPage, facultyListPage } from './faculty/faculty.js';
 // Create a new router instance
 const router = Router();
 
-// Route definitions
+// Router middleware should be added here before route definitions and After creating our router instance
+// Add catalog-specific styles to all catalog routes
+router.use('/catalog', (req, res, next) => {
+    res.addStyle('<link rel="stylesheet" href="/css/catalog.css">');
+    next();
+});
 
+// Add faculty-specific styles to all Faculty members
+router.use('/faculty', (req, res, next) => {
+    res.addStyle('<link rel="stylesheet" href="/css/faculty.css">')
+    next();
+});
+
+// Route definitions
 // Home and about page
 router.get('/', homePage);
 router.get('/about', aboutPage);
