@@ -8,6 +8,8 @@ DROP TABLE IF EXISTS catalog CASCADE;
 DROP TABLE IF EXISTS faculty CASCADE;
 DROP TABLE IF EXISTS courses CASCADE;
 DROP TABLE IF EXISTS departments CASCADE;
+-- DROP TABLE IF EXISTS enrollments CASCADE;
+-- DROP TABLE IF EXISTS students CASCADE;
 
 -- Create departments table
 CREATE TABLE departments (

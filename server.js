@@ -24,14 +24,22 @@ const app = express();
 app.use(express.static(path.join(__dirname, 'public')));
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'src/views'));
+
+// Allow Express to receive and process POST data
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
 /**
  * Global Middleware
  */
 app.use(addLocalVariables);
+
 /**
  * Routes
  */
+
 app.use('/', routes);
+
 /**
  * Error Handling
  */
@@ -41,6 +49,7 @@ app.use((req, res, next) => {
     err.status = 404;
     next(err);
 });
+
 // Global error handler
 app.use((err, req, res, next) => {
     // Prevent infinite loops, if a response has already been sent, do nothing
@@ -67,6 +76,7 @@ app.use((err, req, res, next) => {
         }
     }
 });
+
 /**
  * Start WebSocket Server in Development Mode; used for live reloading
  */
@@ -85,6 +95,7 @@ if (NODE_ENV.includes('dev')) {
         console.error('Failed to start WebSocket server:', error);
     }
 }
+
 /**
  * Start Server
  */

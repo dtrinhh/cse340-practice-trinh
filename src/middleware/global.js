@@ -52,6 +52,7 @@ const setHeadAssetsFunctionality = (res) => {
             .map(item => item.content)
             .join('\n');
     };
+    
 };
 
 /**

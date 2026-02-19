@@ -6,6 +6,7 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
+
 /**
  * Sets up the database by running the seed.sql file if needed.
  * Checks if faculty table has data - if not, runs a full re-seed.
@@ -39,6 +40,15 @@ const setupDatabase = async () => {
     const seedPath = join(__dirname, 'sql', 'seed.sql');
     const seedSQL = fs.readFileSync(seedPath, 'utf8');
     await db.query(seedSQL);
+    
+    // Run practice.sql if it exists (for student assignments)
+    const practicePath = join(__dirname, 'sql', 'practice.sql');
+    if (fs.existsSync(practicePath)) {
+    const practiceSQL = fs.readFileSync(practicePath, 'utf8');
+    await db.query(practiceSQL);
+    console.log('Practice database tables initialized');
+    }
+    
     console.log('Database seeded successfully');
     
     return true;
