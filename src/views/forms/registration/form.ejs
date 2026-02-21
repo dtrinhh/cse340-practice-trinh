@@ -1,0 +1,71 @@
+<%- include('../../partials/header') %>
+<main>
+    <h1><%= title %></h1>
+    <p>
+        Register for a new account by providing your information below. All fields are required and passwords must meet security requirements.
+    </p>
+
+    <form method="POST" action="/register" class="registration-form">
+        <!-- Name field -->
+        <div class="form-group">
+            <!-- TODO: Add label for="name" -->
+            <label for="name">Name</label>
+            <!-- TODO: Add input type="text" id="name" name="name" -->
+            <!-- TODO: Add minlength="2" and required attributes -->
+            <!-- TODO: Add appropriate placeholder text -->
+            <input type="text" id="name" name="name" placeholder="Enter first and last name" minlength="2" required>
+        </div>
+
+        <!-- Email field -->
+        <!-- TODO: Create form-group div -->
+        <div class="form-group">
+
+        <!-- TODO: Add label for email -->
+            <label for="email">Email</label>
+            <!-- TODO: Add input type="email" with id, name, and required -->
+            <input type="email" id="email" name="email" required>
+        </div>
+        
+        <!-- Email confirmation field -->
+        <div class="form-group">
+            <!-- TODO: Create form-group div for emailConfirm -->
+            <label for="'emailConfirm">Email Confirmation</label>
+            
+            <!-- TODO: Should match email field structure -->
+            <!-- TODO: Use name="emailConfirm" -->
+            <input type="email" id="email" name="emailConfirm" required>
+        </div>
+
+        <!-- Password field -->
+        <!-- TODO: Create form-group div -->
+         <div class="form-group">
+            
+            <!-- TODO: Add label for password -->
+            <label for="password">Password</label>
+            
+            <!-- TODO: Add input type="password" -->
+            <!-- TODO: Add minlength="8" and required attributes -->            
+            <!-- TODO: Add pattern="(?=.*[0-9])(?=.*[!@#$%^&*]).*" for validation -->
+            <input type="password" id="password" name="password" pattern="(?=.*[0-9])(?=.*[!@#$%^&*]).*" minlength="8" required>
+
+            <!-- TODO: Add a div with class="help-text" explaining requirements -->
+            <div class="help-text">
+                 HINT: "Must be at least 8 characters with a number and special character"
+                <!-- <textarea id="passwordHelp" name="passwordHelp">Must be at least 8 characters with a number and special character</textarea> -->
+            </div>
+         </div>
+         
+        <!-- Password confirmation field -->
+        <!-- TODO: Similar to password field but for passwordConfirm -->
+        <div class="form-group">
+            <!-- TODO: Use name="passwordConfirm" and appropriate label -->
+            <label for="passwordConfirm">Password Confirmation</label>
+            <input type="password" id="passwordConfirm" name="passwordConfirm" pattern="(?=.*[0-9])(?=.*[!@#$%^&*]).*" minlength="8" required>
+        </div>
+
+        <!-- Submit button -->
+        <!-- TODO: Add button type="submit" with text like "Create Account" -->
+        <button type=submit>Create Account</button>
+    </form>
+</main>
+<%- include('../../partials/footer') %>
