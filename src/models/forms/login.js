@@ -33,7 +33,7 @@ const findUserByEmail = async (email) => {
  */
 const verifyPassword = async (plainPassword, hashedPassword) => {
     // TODO: Use bcrypt.compare() to verify the password
-    const passwordCompare = bcrypt.compare(plainPassword, hashedPassword)
+    const passwordCompare = await bcrypt.compare(plainPassword, hashedPassword)
     // TODO: Return the result (true/false)
     return passwordCompare;
 };

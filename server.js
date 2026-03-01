@@ -13,6 +13,9 @@ import session from 'express-session';
 import connectPgSimple from 'connect-pg-simple';
 import { caCert } from './src/models/db.js';
 
+// Import flash for flash messages via sessions
+import flash from './src/middleware/flash.js';
+
 // Import Cleaning system components
 import { startSessionCleanup } from './src/utils/session-cleanup.js';
 
@@ -55,6 +58,12 @@ app.use(session({
         maxAge: 24 * 60 * 60 * 1000
     }
 }));
+
+// Global middleware (sets res.locals variables)
+app.use(addLocalVariables);
+
+// Flash message middleware (must come after session and global middleware)
+app.use(flash);
 
 // Start automatic session cleanup
 startSessionCleanup();

@@ -24,6 +24,7 @@ const registrationValidation = [
         .withMessage('Email addresses must match'),
     body('password')
         .isLength({ min: 8 })
+        .withMessage('Password must be at least 8 characters long')
         .matches(/[0-9]/)
         .withMessage('Password must contain at least one number')
         .matches(/[!@#$%^&*]/)
@@ -53,8 +54,11 @@ const processRegistration = async (req, res) => {
 
     if (!errors.isEmpty()) {
         // TODO: Log validation errors to console for debugging
-        console.error('Validation errors:', errors.array());
-
+        // console.error('Validation errors:', errors.array());
+        errors.array().forEach(error => {
+            req.flash('error', error.msg)
+        });
+        
         // TODO: Redirect back to /register
         return res.redirect('/register');
 
@@ -72,11 +76,13 @@ const processRegistration = async (req, res) => {
         // if (/* TODO: check if email exists */) {
         if (emailExist) {
             // TODO: Log message: 'Email already registered'
-            console.log('Email already registered')
+            // console.log('Email already registered')
             // console.error('Email already registered')
+            req.flash('error', 'Email already registered')
 
             // TODO: Redirect back to /register
-            return res.redirect('/register');
+            // return res.redirect('/register');
+            return res.redirect('/login');
         }
 
         // Hash the password before saving to database
@@ -90,14 +96,17 @@ const processRegistration = async (req, res) => {
         await saveUser(name, email, hashedPassword);
 
         // TODO: Log success message to console
-        console.log('Successfully saved user!');
+        // console.log('Successfully saved user!');
+        req.flash('Success', 'Successfully saved user!');
 
         // TODO: Redirect to /register/list to show successful registration
-        res.redirect('/register/list');
+        res.redirect('/login');
         // NOTE: Later when we add authentication, we'll change this to require login first
     } catch (error) {
         // TODO: Log the error to console
         console.error('Validation error:', error)
+        // req.flash('Validation error:', error)
+        req.flash('error', 'Validation error:')
         // TODO: Redirect back to /register
         res.redirect('/register');
     }
