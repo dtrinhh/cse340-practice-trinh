@@ -31,6 +31,20 @@
     }
 }
 
+
+.faculty-card {
+    position: relative;
+}
+
+.faculty-photo {
+    width: 50%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    display: block;
+    margin-bottom: 7px;
+    background: url('https://placehold.co/480') center / cover no-repeat;
+            }
+
 .faculty-list {
     display: grid;
     gap: 1.5rem;
